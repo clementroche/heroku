@@ -14,7 +14,7 @@ io.on('connection', (socket) => {
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 
-http.listen(3000, () => {
-    console.log('listening on *:3000');
+http.listen(80, () => {
+    console.log('listening on *:80');
 });
 
