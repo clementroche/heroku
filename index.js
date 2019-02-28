@@ -6,6 +6,7 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
+
 io.on('connection', (socket) => {
     console.log('Client connected');
     socket.on('disconnect', () => console.log('Client disconnected'));
