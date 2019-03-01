@@ -4,18 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Document</title>
     <script src="/socket.io/socket.io.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            -webkit-overflow-scrolling: touch;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        #ping {
+            position: absolute;
+            top:16px;
+            left: 16px;
+        }
+    </style>
 </head>
 <body>
-    <div id="server-time"></div>
+    <canvas></canvas>
+    <span id="ping"></span>
     <script>
-        var socket = io();
-        var el = document.getElementById('server-time');
+        function timestamp() {
+            return window.performance && window.performance.now ? window.performance.now() : new Date().getTime();
+        }
 
-        socket.on('time', function(timeString) {
-            el.innerHTML = 'Server time: ' + timeString;
-        });
-    </script>
+        var now,
+            dt   = 0,
+            last = timestamp(),
+            step = 1/60;
+
+        function frame() {
+            now = timestamp();
+            dt = dt + Math.min(1, (now - last) / 1000);
+            while(dt > step) {
+                dt = dt - step;
+                update(step);
+            }
+            render(dt);
+            last = now;
+            requestAnimationFrame(frame);
+        }
+
+        requestAnimationFrame(frame);
+
+        function update() {
+            socket.emit('touchmove', mouse)
+        }
+
+        let mouse, socket,canvas,ctx
+
+        init()
+
+        function init(){
+            mouse = {}
+            socket = io();
+            canvas = document.querySelector('canvas');
+            canvas.width = window.innerWidth;
+		    canvas.height = window.innerHeight+64;
+            ctx = canvas.getContext("2d");
+        }
+
+        function render() {
+
+        }
+
+            document.addEventListener('touchmove',function(e) {
+                e.preventDefault()
+                let coor = e.changedTouches[0];
+                mouse = {x:coor.pageX,y:coor.pageY,timestamp: Date.now()}
+                
+            }, true)
+    
+            socket.on('draw',function(coor){
+                let ping = document.querySelector('#ping');
+                ping.innerText=Date.now() - coor.timestamp +'ms';
+                ctx.fillStyle = "rgb(200,0,0)";
+                ctx.fillRect(coor.x, coor.y,10,10);
+            })
+        </script>
 </body>
 </html>

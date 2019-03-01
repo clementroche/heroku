@@ -11,6 +11,10 @@ app.get('/', function (req, res) {
 io.on('connection', (socket) => {
     console.log('Client connected');
     socket.on('disconnect', () => console.log('Client disconnected'));
+    socket.on('touchmove', function(coor){
+        console.log(coor)
+        io.emit('draw', coor);
+      });
 });
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
