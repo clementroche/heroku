@@ -7,53 +7,29 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-const rooms = {}
-
 
 io.on('connection', (socket) => {
     // let client = new Client(socket)
     let clientID = socket.id
     let roomID = socket.handshake.query.room || undefined
     let type = socket.handshake.query.type || undefined
-    console.log('Client connected','id: '+clientID,'room: '+roomID,'type: '+type);
-    // io.sockets.in(roomID)
+    console.log('Client connected', 'id: ' + clientID, 'room: ' + roomID, 'type: ' + type);
+
     socket.join(roomID)
+    console.log(io.sockets.clients(roomID))
+
+    io.sockets.in(roomID).emit('join',type)
+     
     io.on('disconnect', () => {
         console.log('Client disconnected')
         socket.leave(roomID)
+        //si le desktop se deconnecte -> supprimer la room
     });
 });
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 
 http.listen(port, () => {
-    console.log('listening on *:80',req.query.id);
-    
+    console.log('listening on *:80');
+
 });
-
-class Client {
-    constructor(socket,type) {
-        this.socket = socket
-        this.type = type
-    }
-}
-
-class Room {
-    constructor(id) {
-        this.id = id
-        this.clients = {
-            desktop: undefined,
-            mobile: undefined
-        }
-    }
-}
-
-function ID() {
-    return (
-      "_" +
-      Math.random()
-        .toString(36)
-        .substr(2, 9)
-    );
-  }
-
