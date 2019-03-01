@@ -10,9 +10,15 @@ app.get('/', function (req, res) {
 
 io.on('connection', (socket) => {
     // let client = new Client(socket)
-    console.log('Client connected',socket.id,socket.handshake.query.room);
-    // io.on('room', (id) => socket.join(id))
-    io.on('disconnect', () => console.log('Client disconnected'));
+    let clientID = socket.id
+    let roomID = socket.handshake.query.room || undefined
+    let type = 
+    console.log('Client connected',clientID,roomID);
+    socket.join(roomID)
+    io.on('disconnect', () => {
+        console.log('Client disconnected')
+        socket.leave(roomID)
+    });
 });
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
@@ -23,9 +29,8 @@ http.listen(port, () => {
 
 class Client {
     constructor(socket,type) {
-        this.socket = socket,
-        this.type = type,
-        this.id = ID()
+        this.socket = socket
+        this.type = type
     }
 }
 

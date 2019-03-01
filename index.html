@@ -10,12 +10,14 @@
 <body>
     <div id="server-time"></div>
     <script>
-        var socket = io();
+        var socket = io({query: `room=${this.ID}`});
         var el = document.getElementById('server-time');
 
         socket.on('time', function(timeString) {
             el.innerHTML = 'Server time: ' + timeString;
         });
+
+        
     </script>
 </body>
 </html>
