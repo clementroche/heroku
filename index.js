@@ -8,9 +8,10 @@ app.get('/', function (req, res) {
 });
 
 
-io.on('connection', (socket) => {
-    console.log('Client connected');
-    socket.on('disconnect', () => console.log('Client disconnected'));
+io.on('connection', (socket,id) => {
+    console.log('Client connected',id);
+    socket.join(id);
+    io.on('disconnect', () => console.log('Client disconnected'));
 });
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
