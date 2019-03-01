@@ -24,8 +24,11 @@ io.on('connection', (socket) => {
 
     clients[socket.id] = new Client(socket,socket.handshake.query.type || undefined)
 
-    socket.on('create room',()=>{
+    socket.on('create room',(params)=>{
         console.log('create')
+        rooms[params.id] = new Room(params.id)
+        clients[socket.id].join(params.id)
+        //ajout type dans la room
     })
 
 
@@ -102,5 +105,16 @@ class Client {
 class Room {
     constructor(id) {
         this.room = io.sockets.adapter.rooms[id]
+        this.desktop = undefined
+        this.mobile = undefined
     }
+
+    set desktop() {
+
+    }
+
+    set mobile () {
+
+    }
+
 }
