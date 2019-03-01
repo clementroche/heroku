@@ -12,8 +12,8 @@ io.on('connection', (socket) => {
     // let client = new Client(socket)
     let clientID = socket.id
     let roomID = socket.handshake.query.room || undefined
-    let type = 
-    console.log('Client connected',clientID,roomID);
+    let type = socket.handshake.query.type || undefined
+    console.log('Client connected','id: '+clientID,'room: '+roomID,'type: '+type);
     socket.join(roomID)
     io.on('disconnect', () => {
         console.log('Client disconnected')
