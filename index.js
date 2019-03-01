@@ -7,42 +7,100 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
+let rooms = {
+
+}
+
+let clients = {
+
+}
 
 io.on('connection', (socket) => {
     // let client = new Client(socket)
-    let clientID = socket.id
-    let roomID = socket.handshake.query.room || undefined
-    let type = socket.handshake.query.type || undefined
-    console.log('Client connected', 'id: ' + clientID, 'room: ' + roomID, 'type: ' + type);
+    // socket.clientID = socket.id
+    // socket.roomID = socket.handshake.query.room || undefined
+    // socket.type = socket.handshake.query.type || undefined
+    // console.log('Client connected', 'id: ' + socket.id, 'room: ' + socket.roomID, 'type: ' + socket.type);
 
-    socket.type = type
+    clients[socket.id] = new Client(socket,socket.handshake.query.type || undefined)
 
-    if(!io.sockets.adapter.rooms[roomID]) {
-        socket.join(roomID)
-    }
-    else if(io.sockets.adapter.rooms[roomID].length < 2) {
-        socket.join(roomID)
-    }
+    socket.on('create room',()=>{
+        console.log('create')
+    })
+
+
+    // if (io.sockets.adapter.rooms[roomID] && socket.type==="desktop") {
+    //     socket.join(roomID)
+    // }
+
+    // var clients = io.sockets.adapter.rooms[roomID].sockets;
+
+    //to get the number of clients
+    // var numClients = (typeof clients !== 'undefined') ? Object.keys(clients).length : 0;
+    // if (numClients)
+
+    // for (var clientId in clients) {
+
+        //this is the socket of each client in the room.
+        // var clientSocket = io.sockets.connected[clientId];
+        // console.log(clientSocket)
+
+        //you can do whatever you need with this
+        //  clientSocket.emit('new event', "Updates");
+
+    // }
+
+    // if(!io.sockets.adapter.rooms[roomID]) {
+    //     socket.join(roomID)
+    // }
+    // else if(io.sockets.adapter.rooms[roomID].length < 2) {
+    //     socket.join(roomID)
+    // }
         // console.log(io.sockets.adapter.rooms[roomID].sockets[0].type);
 
-    if(io.sockets.adapter.rooms[roomID].length > 1) {
-        io.to(roomID).emit('synchro',true)
-        console.log(roomID,"sychro OK")
-    }
-    
-     
-    io.on('disconnect', () => {
-        console.log('Client disconnected')
-        socket.leave(roomID)
-        //si le desktop se deconnecte -> supprimer la room
-        io.to(roomID).emit('desynchro',true)
-        console.log(roomID,"desychro")
+    // if(io.sockets.adapter.rooms[roomID].length > 1) {
+    //     io.to(roomID).emit('synchro',true)
+    //     console.log(roomID,"sychro OK")
+    // }
+
+
+    socket.on('disconnect', () => {
+        // console.log('Client disconnected')
+        // socket.leave(roomID)
+        // //si le desktop se deconnecte -> supprimer la room
+        // io.to(roomID).emit('desynchro', true)
+        // console.log(roomID, "desychro")
     });
 });
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 
 http.listen(port, () => {
-    console.log('listening on *:80');
+    console.log('listening on *:3000');
 
 });
+
+class Client {
+    constructor(socket,type) {
+        this.socket = socket
+        this.type = type
+    }
+
+    get id() {
+        return this.socket.id
+    }
+
+    join(id) {
+        this.socket.join(id)
+    }
+
+    leave() {
+        this.socket.join(id)
+    }
+}
+
+class Room {
+    constructor(id) {
+        this.room = io.sockets.adapter.rooms[id]
+    }
+}
