@@ -24,6 +24,7 @@ io.on('connection', (socket) => {
 
     if(io.sockets.adapter.rooms[roomID].length > 1) {
         io.to(roomID).emit('synchro',true)
+        console.log(roomID,"sychro OK")
     }
     
      
@@ -32,6 +33,7 @@ io.on('connection', (socket) => {
         socket.leave(roomID)
         //si le desktop se deconnecte -> supprimer la room
         io.to(roomID).emit('desynchro',true)
+        console.log(roomID,"desychro")
     });
 });
 
