@@ -7,6 +7,8 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
+const rooms = {}
+
 
 io.on('connection', (socket) => {
     // let client = new Client(socket)
@@ -14,6 +16,7 @@ io.on('connection', (socket) => {
     let roomID = socket.handshake.query.room || undefined
     let type = socket.handshake.query.type || undefined
     console.log('Client connected','id: '+clientID,'room: '+roomID,'type: '+type);
+    // io.sockets.in(roomID)
     socket.join(roomID)
     io.on('disconnect', () => {
         console.log('Client disconnected')
@@ -24,7 +27,8 @@ io.on('connection', (socket) => {
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 
 http.listen(port, () => {
-    console.log('listening on *:80');
+    console.log('listening on *:80',req.query.id);
+    
 });
 
 class Client {
@@ -42,16 +46,6 @@ class Room {
             mobile: undefined
         }
     }
-    
-    // joinClient(client,type) {
-    //     if(type === 'desktop' && this.clients.desktop === undefined) {
-    //         this.desktop = new Client(socket,'desktop')
-    //     }
-
-    //     if(type === 'mobile' && this.clients.mobile === undefined) {
-    //         this.desktop = new Client(socket,'mobile')
-    //     }
-    // }
 }
 
 function ID() {
