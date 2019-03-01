@@ -16,7 +16,7 @@ io.on('connection', (socket) => {
     console.log('Client connected', 'id: ' + clientID, 'room: ' + roomID, 'type: ' + type);
 
     socket.join(roomID)
-    console.log(io.sockets.clients(roomID))
+    // console.log(io.sockets.clients(roomID))
      
     io.on('disconnect', () => {
         console.log('Client disconnected')
