@@ -17,7 +17,10 @@ io.on('connection', (socket) => {
 
     socket.type = type
 
-    if(io.sockets.adapter.rooms[roomID].length < 2) {
+    if(!io.sockets.adapter.rooms[roomID]) {
+        socket.join(roomID)
+    }
+    else if(io.sockets.adapter.rooms[roomID].length < 2) {
         socket.join(roomID)
     }
         // console.log(io.sockets.adapter.rooms[roomID].sockets[0].type);
