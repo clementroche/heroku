@@ -10,7 +10,7 @@ app.get('/', function (req, res) {
 
 io.on('connection', (socket) => {
     // let client = new Client(socket)
-    console.log('Client connected');
+    console.log('Client connected',socket);
     io.on('create room', () => socket.join(id))
     io.on('disconnect', () => console.log('Client disconnected'));
 });
