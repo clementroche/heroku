@@ -15,13 +15,23 @@ io.on('connection', (socket) => {
     let type = socket.handshake.query.type || undefined
     console.log('Client connected', 'id: ' + clientID, 'room: ' + roomID, 'type: ' + type);
 
-    socket.join(roomID)
-    // console.log(io.sockets.clients(roomID))
+    socket.type = type
+
+    if(io.sockets.adapter.rooms[roomID].length < 2) {
+        socket.join(roomID)
+    }
+        // console.log(io.sockets.adapter.rooms[roomID].sockets[0].type);
+
+    if(io.sockets.adapter.rooms[roomID].length > 1) {
+        io.to(roomID).emit('synchro',true)
+    }
+    
      
     io.on('disconnect', () => {
         console.log('Client disconnected')
         socket.leave(roomID)
         //si le desktop se deconnecte -> supprimer la room
+        io.to(roomID).emit('desynchro',true)
     });
 });
 
