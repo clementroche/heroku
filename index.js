@@ -17,8 +17,6 @@ io.on('connection', (socket) => {
 
     socket.join(roomID)
     console.log(io.sockets.clients(roomID))
-
-    io.sockets.in(roomID).emit('join',type)
      
     io.on('disconnect', () => {
         console.log('Client disconnected')
