@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
         if(params.type === 'mobile') {
             if(rooms[params.id] && rooms[params.id].isSynchro === false) {
                 clients[socket.id].join(params.id)
-                io.emit('debug',rooms[params.id])
+                io.emit('debug',{desktop:rooms[params.id].desktop.id,mobile:rooms[params.id].mobile.id})
             }
         }
     })
