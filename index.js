@@ -103,12 +103,12 @@ class Client {
 
     join(id) {
         this.socket.join(id)
-        rooms[id].this[this.type] = this
+        rooms[id][this.type] = this
     }
 
     leave() {
         this.socket.join(id)
-        rooms[id].this[this.type] = undefined
+        rooms[id][this.type] = undefined
     }
 }
 
