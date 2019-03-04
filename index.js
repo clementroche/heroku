@@ -33,6 +33,8 @@ io.on('connection', (socket) => {
             } else {
                 io.to(socket.id).emit('error', "room doesn't exist or is full")
             }
+        } else if(params.type === 'desktop') {
+            //
         }
     })
 
@@ -106,7 +108,8 @@ class Room {
         console.log(this.id)
         io.in(this.id).emit('desynchronisation')
         if(this.desktop === undefined && this.mobile === undefined) {
-            this.rooms[this.id] = undefined
+            console.log(this.id,'deleted')
+            rooms[this.id] = undefined
         }
     }
 
