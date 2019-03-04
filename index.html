@@ -24,7 +24,7 @@
             el.innerHTML = 'Server time: ' + timeString;
         })
 
-        socket.io('debug',(e)=>{
+        socket.on('debug',(e)=>{
             console.log(e)
         })
     </script>
