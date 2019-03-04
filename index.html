@@ -33,6 +33,10 @@
             console.log(e)
         })
 
+        socket.on('synchronisation',(e)=>{
+            console.log('SYNCHRO',e)
+        })
+
         socket.on('desynchronisation',(e)=>{
             console.log('DESYNCHRO')
         })
