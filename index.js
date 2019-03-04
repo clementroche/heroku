@@ -33,15 +33,17 @@ io.on('connection', (socket) => {
         }
     });
 
- 
-        
-    if(socket.handshake.query.type === 'mobile') {
-        if(rooms[socket.handshake.query.id]) {
-            console.log('room joined')
-            clients[socket.id].join(socket.handshake.query.id)
-            // io.emit('debug',{clients: clients, rooms: rooms})
+    socket.on('join room',(params)=>{
+        if(params.type === 'mobile') {
+            if(rooms[params.id]) {
+                console.log('room joined')
+                clients[socket.id].join(params.id)
+                // io.emit('debug',{clients: clients, rooms: rooms})
+            }
         }
-    }
+    })
+        
+
 
 
 
@@ -80,7 +82,7 @@ io.on('connection', (socket) => {
     // }
 
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (socket) => {
         // console.log('Client disconnected')
         // socket.leave(roomID)
         // //si le desktop se deconnecte -> supprimer la room
@@ -100,6 +102,7 @@ class Client {
     constructor(socket,type) {
         this.socket = socket
         this.type = type
+        this.room = undefined
     }
 
     get id() {
@@ -109,11 +112,13 @@ class Client {
     join(id) {
         this.socket.join(id)
         rooms[id][this.type] = this
+        this.room = rooms[id]
     }
 
-    leave() {
-        this.socket.join(id)
+    leave(id) {
+        this.socket.leave(id)
         rooms[id][this.type] = undefined
+        this.room = undefined
     }
 }
 

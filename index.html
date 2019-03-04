@@ -14,8 +14,7 @@
     <script>
         var socket = io({
             query: {
-                type: 'mobile',
-                id: 'TESTID'
+                type: 'mobile'
             },
         });
         var el = document.getElementById('server-time');
@@ -23,6 +22,8 @@
         socket.on('time', function (timeString) {
             el.innerHTML = 'Server time: ' + timeString;
         })
+
+        socket.emit('join room', {type: 'mobile',id: 'TESTID'})
 
         socket.on('debug',(e)=>{
             console.log(e)
