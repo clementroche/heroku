@@ -30,13 +30,12 @@ io.on('connection', (socket) => {
             clients[socket.id].join(params.id)
         }
     });
-
-    socket.on('join room',(params)=>{
-        if(params.type === 'mobile') {
+        
+    if(params.type === 'mobile') {
             clients[socket.id].join(params.id)
             io.emit('debug',{clients: clients, rooms: rooms})
         }
-    });
+
 
 
     // if (io.sockets.adapter.rooms[roomID] && socket.type==="desktop") {
