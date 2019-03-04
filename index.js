@@ -96,8 +96,8 @@ class Room {
 
     synchronisation() {
         io.in(this.id).emit('synchronisation', {
-            desktop: rooms[params.id].desktop.id,
-            mobile: rooms[params.id].mobile.id
+            desktop: this.desktop.id,
+            mobile: this.mobile.id
         })
     }
 
