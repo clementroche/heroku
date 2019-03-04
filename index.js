@@ -128,7 +128,7 @@ class Client {
 class Room {
     constructor(id) {
         this.id = id
-        this.room = io.sockets.adapter.rooms[this.id]
+        // this.room = io.sockets.adapter.rooms[this.id]
         this.desktop = undefined
         this.mobile = undefined
         console.log('room created',this.id)
@@ -139,7 +139,7 @@ class Room {
     }
 
     deSynchronisation() {
-        io.in(this.id).emit('desynchronisation')
+        io.in(io.sockets.adapter.rooms[this.id]).emit('desynchronisation')
     }
 
 }
