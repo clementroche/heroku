@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
     });
         
     if(socket.handshake.query.type === 'mobile') {
-        if(rooms[socket.handshake.query.type]) {
+        if(rooms[socket.handshake.query.id]) {
             clients[socket.id].join(params.id)
             io.emit('debug',{clients: clients, rooms: rooms})
         }
