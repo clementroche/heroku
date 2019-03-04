@@ -65,6 +65,9 @@ class Client {
         this.socket.join(id)
         rooms[id][this.type] = this
         this.room = rooms[id]
+        if(this.room.isSynchro) {
+            this.room.synchronisation()
+        }
         console.log(this.type, ' joined room ', id)
     }
 
