@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
 
     socket.on('join room', (params) => {
         if (params.type === 'mobile') {
-            if (rooms[params.id] && rooms[params.id].mobile === undefined) {
+            if (rooms[params.id] && rooms[params.id].desktop !== undefined && rooms[params.id].mobile === undefined) {
                 clients[socket.id].join(params.id)
             } else {
                 io.to(socket.id).emit('error', "room doesn't exist or is full")
@@ -40,6 +40,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Client disconnected', socket.id)
         clients[socket.id].leave()
+        clients[socket.id] = undefined
     });
 });
 
@@ -104,6 +105,9 @@ class Room {
     deSynchronisation() {
         console.log(this.id)
         io.in(this.id).emit('desynchronisation')
+        if(this.desktop === undefined && this.mobile === undefined) {
+            this.rooms[this.id] = undefined
+        }
     }
 
 }
