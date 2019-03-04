@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
         if(rooms[socket.handshake.query.id]) {
             console.log('room joined')
             clients[socket.id].join(socket.handshake.query.id)
-            io.emit('debug',{clients: clients, rooms: rooms})
+            // io.emit('debug',{clients: clients, rooms: rooms})
         }
     }
 
