@@ -111,7 +111,7 @@ class Client {
         this.socket.join(id)
         rooms[id][this.type] = this
         this.room = rooms[id]
-        console.log(this.type,' joined room ',this.id)
+        console.log(this.type,' joined room ',id)
     }
 
     leave(id) {
