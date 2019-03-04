@@ -117,6 +117,7 @@ class Client {
     }
 
     leave() {
+        console.log(this.room)
         this.room.deSynchronisation()
         this.socket.leave(this.room.id)
         rooms[this.room.id][this.type] = undefined
