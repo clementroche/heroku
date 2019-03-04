@@ -139,6 +139,7 @@ class Room {
     }
 
     deSynchronisation() {
+        console.log(rooms[this.id])
         io.in(rooms[this.id]).emit('desynchronisation')
     }
 
