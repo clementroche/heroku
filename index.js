@@ -34,9 +34,9 @@ io.on('connection', (socket) => {
 
     socket.on('join room',(params)=>{
         if(params.type === 'mobile') {
-            if(rooms[params.id]) {
+            if(rooms[params.id] && rooms[params.id].isSynchro === false) {
                 clients[socket.id].join(params.id)
-                // io.emit('debug',{clients: clients, rooms: rooms})
+                io.emit('debug',rooms[params.id])
             }
         }
     })
@@ -82,7 +82,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', (socket) => {
         // console.log('Client disconnected')
-        // socket.leave(roomID)
+        socket.leave()
         // //si le desktop se deconnecte -> supprimer la room
         // io.to(roomID).emit('desynchro', true)
         // console.log(roomID, "desychro")
@@ -114,27 +114,24 @@ class Client {
         console.log(this.type,' joined room ',id)
     }
 
-    leave(id) {
-        this.socket.leave(id)
-        rooms[id][this.type] = undefined
+    leave() {
+        this.socket.leave(this.room.id)
+        rooms[this.room.id][this.type] = undefined
         this.room = undefined
     }
 }
 
 class Room {
     constructor(id) {
-        this.room = io.sockets.adapter.rooms[id]
+        this.id = id
+        this.room = io.sockets.adapter.rooms[this.id]
         this.desktop = undefined
         this.mobile = undefined
         console.log('room created',this.id)
     }
 
-    // set desktop() {
-
-    // }
-
-    // set mobile () {
-
-    // }
+    get isSynchro() {
+        return Boolean(this.desktop !== undefined && this.mobile !== undefined)
+    }
 
 }
