@@ -139,7 +139,7 @@ class Room {
     }
 
     deSynchronisation() {
-        io.in(io.sockets.adapter.rooms[this.id]).emit('desynchronisation')
+        io.in(rooms[this.id]).emit('desynchronisation')
     }
 
 }
