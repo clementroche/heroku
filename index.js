@@ -34,6 +34,7 @@ io.on('connection', (socket) => {
     socket.on('join room',(params)=>{
         if(params.type === 'mobile') {
             clients[socket.id].join(params.id)
+            io.emit('debug',{clients: clients, rooms: rooms})
         }
     });
 

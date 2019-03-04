@@ -22,6 +22,10 @@
         socket.on('time', function (timeString) {
             el.innerHTML = 'Server time: ' + timeString;
         })
+
+        socket.io('debug',(e)=>{
+            console.log(e)
+        })
     </script>
 </body>
 
