@@ -37,6 +37,8 @@ io.on('connection', (socket) => {
             if(rooms[params.id] && rooms[params.id].isSynchro === false) {
                 clients[socket.id].join(params.id)
                 io.emit('debug',{desktop:rooms[params.id].desktop.id,mobile:rooms[params.id].mobile.id})
+            } else {
+                io.to(socket.id).emit('error',"room doesn't exist or is full")
             }
         }
     })
@@ -115,6 +117,7 @@ class Client {
     }
 
     leave() {
+        this.room.deSynchronisation()
         this.socket.leave(this.room.id)
         rooms[this.room.id][this.type] = undefined
         this.room = undefined
@@ -132,6 +135,10 @@ class Room {
 
     get isSynchro() {
         return Boolean(this.desktop !== undefined && this.mobile !== undefined)
+    }
+
+    deSynchronisation() {
+        io.in(this.id).emit('desynchronisation')
     }
 
 }

@@ -28,6 +28,14 @@
         socket.on('debug',(e)=>{
             console.log(e)
         })
+
+        socket.on('error',(e)=>{
+            console.log(e)
+        })
+
+        socket.on('desynchronisation',(e)=>{
+            console.log('DESYNCHRO')
+        })
     </script>
 </body>
 
