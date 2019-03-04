@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
         rooms[params.id] = new Room(params.id)
         clients[socket.id].join(params.id)
         //ajout type dans la room
-    })
+    });
 
 
     // if (io.sockets.adapter.rooms[roomID] && socket.type==="desktop") {
