@@ -22,12 +22,11 @@ io.on('connection', (socket) => {
     // socket.type = socket.handshake.query.type || undefined
     // console.log('Client connected', 'id: ' + socket.id, 'room: ' + socket.roomID, 'type: ' + socket.type);
     console.log('connected')
-    console.log(socket.handshake.query.type, socket.handshake.query.id)
+    // console.log(socket.handshake.query.type, socket.handshake.query.id)
     clients[socket.id] = new Client(socket,socket.handshake.query.type || undefined)
 
     socket.on('create room',(params)=>{
         if(params.type === 'desktop') {
-            console.log('room created')
             rooms[params.id] = new Room(params.id)
             clients[socket.id].join(params.id)
         }
@@ -36,7 +35,6 @@ io.on('connection', (socket) => {
     socket.on('join room',(params)=>{
         if(params.type === 'mobile') {
             if(rooms[params.id]) {
-                console.log('room joined')
                 clients[socket.id].join(params.id)
                 // io.emit('debug',{clients: clients, rooms: rooms})
             }
@@ -113,6 +111,7 @@ class Client {
         this.socket.join(id)
         rooms[id][this.type] = this
         this.room = rooms[id]
+        console.log(this.type,' joined room ',this.id)
     }
 
     leave(id) {
@@ -127,6 +126,7 @@ class Room {
         this.room = io.sockets.adapter.rooms[id]
         this.desktop = undefined
         this.mobile = undefined
+        console.log('room created',this.id)
     }
 
     // set desktop() {
