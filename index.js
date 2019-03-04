@@ -82,7 +82,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', (socket) => {
         // console.log('Client disconnected')
-        socket.leave()
+        clients[socket.id].leave()
         // //si le desktop se deconnecte -> supprimer la room
         // io.to(roomID).emit('desynchro', true)
         // console.log(roomID, "desychro")
