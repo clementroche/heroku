@@ -31,7 +31,7 @@ io.on('connection', (socket) => {
         }
     });
         
-    if(params.type === 'mobile') {
+    if(socket.handshake.query.type === 'mobile') {
             clients[socket.id].join(params.id)
             io.emit('debug',{clients: clients, rooms: rooms})
         }
