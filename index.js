@@ -17,6 +17,7 @@ let clients = {
 
 io.on('connection', (socket) => {
     console.log('connected')
+    io.emit('debug',{rooms: rooms, clients: clients})
     clients[socket.id] = new Client(socket, socket.handshake.query.type || undefined)
 
     socket.on('create room', (params) => {
