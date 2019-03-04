@@ -25,10 +25,16 @@ io.on('connection', (socket) => {
     clients[socket.id] = new Client(socket,socket.handshake.query.type || undefined)
 
     socket.on('create room',(params)=>{
-        console.log('create')
-        rooms[params.id] = new Room(params.id)
-        clients[socket.id].join(params.id)
-        //ajout type dans la room
+        if(params.type === 'desktop') {
+            rooms[params.id] = new Room(params.id)
+            clients[socket.id].join(params.id)
+        }
+    });
+
+    socket.on('join room',(params)=>{
+        if(params.type === 'mobile') {
+            clients[socket.id].join(params.id)
+        }
     });
 
 
@@ -95,10 +101,12 @@ class Client {
 
     join(id) {
         this.socket.join(id)
+        rooms[id].this[this.type] = this
     }
 
     leave() {
         this.socket.join(id)
+        rooms[id].this[this.type] = undefined
     }
 }
 
