@@ -21,15 +21,15 @@ io.on('connection', (socket) => {
     // socket.roomID = socket.handshake.query.room || undefined
     // socket.type = socket.handshake.query.type || undefined
     // console.log('Client connected', 'id: ' + socket.id, 'room: ' + socket.roomID, 'type: ' + socket.type);
+    console.log('connected')
+    // clients[socket.id] = new Client(socket,socket.handshake.query.type || undefined)
 
-    clients[socket.id] = new Client(socket,socket.handshake.query.type || undefined)
-
-    socket.on('create room',(params)=>{
-        console.log('create')
-        rooms[params.id] = new Room(params.id)
-        clients[socket.id].join(params.id)
-        //ajout type dans la room
-    });
+    // socket.on('create room',(params)=>{
+    //     console.log('create')
+    //     rooms[params.id] = new Room(params.id)
+    //     clients[socket.id].join(params.id)
+    //     //ajout type dans la room
+    // });
 
 
     // if (io.sockets.adapter.rooms[roomID] && socket.type==="desktop") {
