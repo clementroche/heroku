@@ -6,10 +6,10 @@ const port = process.env.PORT || 3000
 
 io.on('connection', (socket) => {
     console.log('connected', socket.id)
+    console.log(socket.handshake.query.device)
 
     socket.on('disconnect', () => {
         console.log('Client disconnected', socket.id)
-        console.log(socket.handshake.query.device)
         socket.leave()
     });
 });
