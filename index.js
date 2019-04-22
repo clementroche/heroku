@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('Client disconnected', socket.id)
+        console.log(socket.rooms)
         socket.leave()
     });
 });
