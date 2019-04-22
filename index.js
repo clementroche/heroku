@@ -9,11 +9,10 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('Client disconnected', socket.id)
+        console.log(socket.handshake.query.device)
         socket.leave()
     });
 });
-
-
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 
