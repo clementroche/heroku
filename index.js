@@ -5,8 +5,15 @@ const io = require('socket.io')(http);
 const port = process.env.PORT || 3000
 
 io.on('connection', (socket) => {
-    console.log('connected')
+    console.log('connected', socket.id)
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected', socket.id)
+        socket.leave()
+    });
 });
+
+
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 
