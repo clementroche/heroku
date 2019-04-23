@@ -56,15 +56,12 @@ io.on("connection", socket => {
       !!room[socket_room].desktop &&
       !!room[socket_room].mobile
     ) {
-      io.to(socket._room).emit("synchro", true);
+      io.in(socket._room).emit("synchro", true);
     }
   }
 
-  io.emit("debug", socket._room);
-
   socket.on("disconnect", () => {
     console.log("Client disconnected", socket.id);
-    io.emit("debug", socket._room);
     //si socket est dans une room
     if (!!socket._room) {
     }
