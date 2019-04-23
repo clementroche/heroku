@@ -56,6 +56,7 @@ io.on("connection", socket => {
       !!rooms[socket._room].desktop &&
       !!rooms[socket._room].mobile
     ) {
+      console.log(socket._room, "room synchro");
       io.in(socket._room).emit("synchro", true);
     }
   }
