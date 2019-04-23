@@ -32,6 +32,7 @@ io.on("connection", socket => {
         desktop: null,
         mobile: null
       };
+      rooms[id].desktop = socket;
       io.to(socket.id).emit("room created", id);
     }
   } else if (socket._device === "mobile") {
@@ -46,6 +47,7 @@ io.on("connection", socket => {
       // -> join la room
       socket.join(id);
       socket._room = id;
+      rooms[id].mobile = socket;
       io.to(socket.id).emit("room joined", id);
     }
   }
