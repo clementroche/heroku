@@ -23,10 +23,11 @@ io.on("connection", socket => {
     io.to(socket.id).emit("room joined", id);
   }
 
+  io.emit("debug", socket.rooms);
+
   socket.on("disconnect", () => {
     console.log("Client disconnected", socket.id);
     io.emit("debug", socket.rooms);
-    console.log(socket.rooms);
     socket.leave();
   });
 });
