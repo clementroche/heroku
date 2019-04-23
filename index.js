@@ -53,8 +53,8 @@ io.on("connection", socket => {
   if (socket._device === "mobile" || socket._device === "desktop") {
     if (
       !!socket._room &&
-      !!rooms[socket_room].desktop &&
-      !!rooms[socket_room].mobile
+      !!rooms[socket._room].desktop &&
+      !!rooms[socket._room].mobile
     ) {
       io.in(socket._room).emit("synchro", true);
     }
