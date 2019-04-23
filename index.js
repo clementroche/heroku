@@ -10,39 +10,60 @@ function createID() {
     .substr(2, 9);
 }
 
+let rooms = {};
+
 io.on("connection", socket => {
   console.log("connected", socket.id);
   socket._device = socket.handshake.query.device;
   console.log(socket._device);
   if (socket._device === "desktop") {
-    //si desktop -> créé la room
+    //si desktop
 
-    //TODO
-    //si room n'existe pas ou
-    // ||
-    //si room ne contient pas de desktop
     let id = createID();
-    socket.join(id);
-    socket._room = id;
-    io.to(socket.id).emit("room created", id);
-  } else if (socket._device === "mobile") {
-    //si mobile -> join la room
 
-    //TODO
-    //si room existe
-    // &&
-    //si room ne contient pas de mobile
+    //si room n'existe pas ou
+    //||
+    //si room ne contient pas de desktop
+    if (!rooms[id]) {
+      // -> créé la room
+      socket.join(id);
+      socket._room = id;
+      rooms[id] = {
+        desktop: null,
+        mobile: null
+      };
+      io.to(socket.id).emit("room created", id);
+    }
+  } else if (socket._device === "mobile") {
+    //si mobile
+
     let id = socket.handshake.query.roomID;
-    socket.join(id);
-    socket._room = id;
-    io.to(socket.id).emit("room joined", id);
+
+    //si room existe
+    //&&
+    //si room ne contient pas de mobile
+    if (!!rooms[id] && !rooms[id].mobile) {
+      // -> join la room
+      socket.join(id);
+      socket._room = id;
+      io.to(socket.id).emit("room joined", id);
+    }
   }
 
-  io.emit("debug", socket.adapter.rooms);
+  if (socket._device === "mobile" || socket._device === "desktop") {
+    if (!!socket._room && !!socket.desktop && !!socket.mobile) {
+      io.to(socket._room).emit("synchro", true);
+    }
+  }
+
+  io.emit("debug", socket._room);
 
   socket.on("disconnect", () => {
     console.log("Client disconnected", socket.id);
     io.emit("debug", socket._room);
+    //si socket est dans une room
+    if (!!socket._room) {
+    }
     socket.leave();
   });
 });
