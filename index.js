@@ -12,14 +12,29 @@ function createID() {
 
 io.on("connection", socket => {
   console.log("connected", socket.id);
-  console.log(socket.handshake.query.device);
-  if (socket.handshake.query.device === "desktop") {
+  socket._device = socket.handshake.query.device;
+  console.log(socket._device);
+  if (socket._device === "desktop") {
+    //si desktop -> créé la room
+
+    //TODO
+    //si room n'existe pas ou
+    // ||
+    //si room ne contient pas de desktop
     let id = createID();
     socket.join(id);
+    socket._room = id;
     io.to(socket.id).emit("room created", id);
-  } else if (socket.handshake.query.device === "mobile") {
+  } else if (socket._device === "mobile") {
+    //si mobile -> join la room
+
+    //TODO
+    //si room existe
+    // &&
+    //si room ne contient pas de mobile
     let id = socket.handshake.query.roomID;
     socket.join(id);
+    socket._room = id;
     io.to(socket.id).emit("room joined", id);
   }
 
@@ -27,7 +42,7 @@ io.on("connection", socket => {
 
   socket.on("disconnect", () => {
     console.log("Client disconnected", socket.id);
-    io.emit("debug", socket.adapter.rooms);
+    io.emit("debug", socket._room);
     socket.leave();
   });
 });
