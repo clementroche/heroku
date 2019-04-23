@@ -67,6 +67,11 @@ io.on("connection", socket => {
     console.log("Client disconnected", socket.id);
     //si socket est dans une room
     if (!!socket._room) {
+      rooms[socket._room][socket._device] = null;
+      io.in(socket._room).emit("synchro", false);
+      if (!rooms[socket._room].desktop && !rooms[socket._room].mobile) {
+        delete rooms[socket._room];
+      }
     }
     socket.leave();
   });
