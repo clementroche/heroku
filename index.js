@@ -20,7 +20,7 @@ io.on("connection", socket => {
   if (socket._device === "desktop") {
     //si desktop
 
-    if(socket._room) {
+    if(!!socket._room) {
       let id = socket._room
 
       socket.join(id);
