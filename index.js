@@ -71,6 +71,7 @@ io.on("connection", socket => {
   if (socket._device === "mobile" || socket._device === "desktop") {
     if (
       !!socket._room &&
+      !!rooms[socket._room] &&
       !!rooms[socket._room].desktop &&
       !!rooms[socket._room].mobile
     ) {
