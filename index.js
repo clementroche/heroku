@@ -83,7 +83,7 @@ io.on("connection", socket => {
   socket.on("disconnect", () => {
     console.log("Client disconnected", socket.id);
     //si socket est dans une room
-    if (!!socket._room) {
+    if (!!socket._room && !!rooms[socket._room]) {
       rooms[socket._room][socket._device] = null;
       io.in(socket._room).emit("synchro", false);
       if (!rooms[socket._room].desktop && !rooms[socket._room].mobile) {
