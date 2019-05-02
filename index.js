@@ -27,6 +27,8 @@ io.on("connection", socket => {
       rooms[id].desktop = socket;
       io.to(socket.id).emit("room joined", id);
 
+      console.log('reconnect room',id)
+
     } else {
       let id = createID();
 
