@@ -16,7 +16,7 @@ io.on("connection", socket => {
   console.log("connected", socket.id);
   socket._device = socket.handshake.query.device;
   socket._room = socket.handshake.query.roomID;
-  console.log(socket._device);
+  console.log(socket._device,socket._room);
   if (socket._device === "desktop") {
     //si desktop
 
