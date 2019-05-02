@@ -15,30 +15,40 @@ let rooms = {};
 io.on("connection", socket => {
   console.log("connected", socket.id);
   socket._device = socket.handshake.query.device;
+  socket._room = socket.handshake.query.roomID;
   console.log(socket._device);
   if (socket._device === "desktop") {
     //si desktop
 
-    let id = createID();
+    if(socket._room) {
+      let id = socket._room
 
-    //si room n'existe pas ou
-    //||
-    //si room ne contient pas de desktop
-    if (!rooms[id]) {
-      // -> créé la room
       socket.join(id);
-      socket._room = id;
-      rooms[id] = {
-        desktop: null,
-        mobile: null
-      };
       rooms[id].desktop = socket;
-      io.to(socket.id).emit("room created", id);
+      io.to(socket.id).emit("room joined", id);
+
+    } else {
+      let id = createID();
+
+      //si room n'existe pas ou
+      //||
+      //si room ne contient pas de desktop
+      if (!rooms[id]) {
+        // -> créé la room
+        socket.join(id);
+        socket._room = id;
+        rooms[id] = {
+          desktop: null,
+          mobile: null
+        };
+        rooms[id].desktop = socket;
+        io.to(socket.id).emit("room created", id);
+      }
     }
   } else if (socket._device === "mobile") {
     //si mobile
 
-    let id = socket.handshake.query.roomID;
+    let id = socket._room;
 
     //si room existe
     //&&
