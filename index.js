@@ -15,12 +15,14 @@ let rooms = {};
 io.on("connection", socket => {
   console.log("connected", socket.id);
   socket._device = socket.handshake.query.device;
-  socket._room = socket.handshake.query.roomID;
+  if(socket.handshake.query.roomID != 'null' && socket.handshake.query.roomID != null)
+    socket._room = socket.handshake.query.roomID;
+  }
   console.log(socket._device,socket._room);
   if (socket._device === "desktop") {
     //si desktop
 
-    if(socket._room != 'null' && socket._room != null) {
+    if(!!socket._room) {
       let id = socket._room
 
       if(!!rooms[id]){
