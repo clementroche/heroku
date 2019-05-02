@@ -23,11 +23,13 @@ io.on("connection", socket => {
     if(socket._room != 'null' && socket._room != null) {
       let id = socket._room
 
-      socket.join(id);
-      rooms[id].desktop = socket;
-      io.to(socket.id).emit("room joined", id);
+      if(!!rooms[id]){
+        socket.join(id);
+        rooms[id].desktop = socket;
+        io.to(socket.id).emit("room joined", id);
 
-      console.log('reconnect room',id)
+        console.log('reconnect room',id)
+      }
 
     } else {
       let id = createID();
