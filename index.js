@@ -99,6 +99,7 @@ io.on("connection", socket => {
 });
 
 io.on('custom-event', (args) => {
+  console.log(`io.in(${args.in}.emit(${args.name}, args.args))`)
   io.in(args.in).emit(args.name, args.args);
 })
 
