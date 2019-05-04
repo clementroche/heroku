@@ -96,12 +96,12 @@ io.on("connection", socket => {
     }
     socket.leave();
   });
-});
 
-io.on('custom-event', (args) => {
-  console.log(`io.in(${args.in}.emit(${args.name}, args.args))`)
-  io.in(args.in).emit(args.name, args.args);
-})
+  socket.on('custom-event', (args) => {
+    console.log(`io.in(${args.in}.emit(${args.name}, args.args))`)
+    io.in(args.in).emit(args.name, args.args);
+  })
+});
 
 http.listen(port, () => {
   console.log("listening on *:3000");
