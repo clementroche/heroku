@@ -98,7 +98,9 @@ io.on("connection", socket => {
   });
 });
 
-setInterval(() => io.emit("time", new Date().toTimeString()), 1000);
+io.on('custom-event', (args) => {
+  io.in(args.in).emit(args.name, args.args);
+})
 
 http.listen(port, () => {
   console.log("listening on *:3000");
