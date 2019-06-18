@@ -4,10 +4,21 @@ const io = require("socket.io")(http);
 
 const port = process.env.PORT || 3000;
 
+const consonants = [
+	'b', 'd', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'z'
+]
+
+const vowels = [
+	'a','e','i','o','u'
+]
+
 function createID() {
-  return Math.random()
-    .toString(36)
-    .substr(2, 9);
+	let id = '';
+	for(let i=0; i<3;i++) {
+		id += consonants[Math.floor(consonants.length * Math.random())]
+		id += vowels[Math.floor(vowels.length * Math.random())]
+	}
+	return id
 }
 
 let rooms = {};
